@@ -33,8 +33,8 @@ client.connect(err => {
       })
   });
 
-  app.get('/service', (req, res) => {
-    serviceCollection.find()
+  app.get('/allOrders', (req, res) => {
+    orderCollection.find()
       .toArray((err, pd) => {
         res.send(pd)
       })
@@ -49,6 +49,21 @@ client.connect(err => {
       })
   })
 
+  app.get('/service', (req, res) => {
+    serviceCollection.find()
+      .toArray((err, pd) => {
+        res.send(pd)
+      })
+  })
+
+  app.post('/isAdmin', (req, res) => {
+    const email = req.body.email;
+    adminCollection.find({email: email})
+      .toArray((err, admin) => {
+        res.send(admin.length > 0)
+      })
+  })
+
 
   app.post('/bookService', (req, res) => {
     const newOrder = req.body;
@@ -58,6 +73,8 @@ client.connect(err => {
         res.send(result.insertedCount > 0)
       })
   })
+
+  
 });
 
 app.get('/', (req, res) => {
