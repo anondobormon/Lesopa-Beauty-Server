@@ -20,6 +20,7 @@ client.connect(err => {
   const adminCollection = client.db("LeospaBeauty").collection("admin");
   const serviceCollection = client.db("LeospaBeauty").collection("service");
   const orderCollection = client.db("LeospaBeauty").collection("order");
+  const reviewCollection = client.db("LeospaBeauty").collection("review");
 
 
   console.log('Database connected');
@@ -46,6 +47,21 @@ client.connect(err => {
       .then(result => {
         console.log('inserted-count', result.insertedCount);
         res.send(result.insertedCount > 0)
+      })
+  })
+  app.post('/addReview', (req, res) => {
+    const newReview = req.body;
+    reviewCollection.insertOne(newReview)
+      .then(result => {
+        console.log('inserted-count', result.insertedCount);
+        res.send(result.insertedCount > 0)
+      })
+  })
+
+  app.get('/review', (req, res) => {
+    reviewCollection.find()
+      .toArray((err, reviews) => {
+        res.send(reviews)
       })
   })
 
