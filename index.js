@@ -1,6 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 const bodyParser = require('body-parser');
+const ObjectId = require('mongodb').ObjectId;
 const MongoClient = require('mongodb').MongoClient;
 
 
@@ -74,7 +75,7 @@ client.connect(err => {
 
   app.post('/isAdmin', (req, res) => {
     const email = req.body.email;
-    adminCollection.find({email: email})
+    adminCollection.find({ email: email })
       .toArray((err, admin) => {
         res.send(admin.length > 0)
       })
@@ -90,7 +91,23 @@ client.connect(err => {
       })
   })
 
-  
+  app.delete('/delete/:id', (req, res) => {
+    orderCollection.deleteOne({ _id: ObjectId(req.params.id) })
+      .then(result => {
+        console.log(result);
+      })
+  })
+
+  app.get('/allOrder/:id', (req, res) => {
+    orderCollection.find({ _id: ObjectId(req.params.id) })
+      .toArray((err, documents) => {
+        res.send(documents[0])
+      })
+  })
+
+
+
+
 });
 
 app.get('/', (req, res) => {
