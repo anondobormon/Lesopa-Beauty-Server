@@ -1,6 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 const bodyParser = require('body-parser');
+require('dotenv').config();
 const ObjectId = require('mongodb').ObjectId;
 const MongoClient = require('mongodb').MongoClient;
 
@@ -14,7 +15,7 @@ const port = 5000
 
 
 
-const uri = "mongodb+srv://beauty:beauty12345875632@cluster0.bmrke.mongodb.net/LeospaBeauty?retryWrites=true&w=majority";
+const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.bmrke.mongodb.net/${process.env.DB_NAME}?retryWrites=true&w=majority`;
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
 client.connect(err => {
   const collection = client.db("LeospaBeauty").collection("devices");
@@ -98,15 +99,6 @@ client.connect(err => {
       })
   })
 
-  app.get('/allOrder/:id', (req, res) => {
-    orderCollection.find({ _id: ObjectId(req.params.id) })
-      .toArray((err, documents) => {
-        res.send(documents[0])
-      })
-  })
-
-
-
 
 });
 
@@ -114,4 +106,4 @@ app.get('/', (req, res) => {
   res.send('Hello World!')
 })
 
-app.listen(port)
+app.listen(process.env.PORT || port)
