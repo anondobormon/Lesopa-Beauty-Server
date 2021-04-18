@@ -7,7 +7,7 @@ const MongoClient = require('mongodb').MongoClient;
 
 
 
-const pass = 'beauty12345875632';
+
 const app = express()
 app.use(cors());
 app.use(bodyParser.json())
